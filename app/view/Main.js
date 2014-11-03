@@ -29,14 +29,14 @@ Ext.define('YoutubeVideosApp.view.Main', {
                 ]
             },
             {
-                title: 'Get Started',
-                iconCls: 'action',
+                title: 'Settings',
+                iconCls: 'settings',
 
                 items: [
                     {
                         docked: 'top',
                         xtype: 'titlebar',
-                        title: 'Getting Started'
+                        title: 'Filter Options'
                     }
                 ]
             }
