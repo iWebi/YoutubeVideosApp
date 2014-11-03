@@ -1,0 +1,12 @@
+.idea
+.sencha
+*.iml
+build
+phonegap
+cordova
+bootstrap.js
+bootstrap.json
+resources/sass/.sass-cache
+.project
+.settings
+.settings/*
