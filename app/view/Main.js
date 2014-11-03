@@ -6,9 +6,6 @@ Ext.define('YoutubeVideosApp.view.Main', {
         'Ext.Video',
         'Ext.List',
         'YoutubeVideosApp.view.VideosContainer'
-//        'YoutubeVideosApp.view.VideosList',
-//        'YoutubeVideosApp.store.VideosStore',
-//        'YoutubeVideosApp.model.VideoModel'
     ],
     config: {
         tabBarPosition: 'bottom',
