@@ -4,11 +4,11 @@
 Ext.define('YoutubeVideosApp.store.VideoStore', {
     extend: 'Ext.data.Store',
     alias: 'videostore',
-
     requires: ['YoutubeVideosApp.model.VideoModel', 'YoutubeVideosApp.core.GlobalCache'],
     config: {
         storeId: 'videostore',
         model: 'YoutubeVideosApp.model.VideoModel',
+        autoLoad : true,
         channelId: null,
         proxy: {
             type: 'ajax',
@@ -16,7 +16,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
             useDefaultXhrHeader: false,
             extraParams: {
                 part: 'snippet',
-                maxResults: 30,
+                maxResults: 10,
                 key: 'AIzaSyByR-19brS7IWGmskOHhXiaCpSUxWfQOeU',
                 order:'date',
                 type:'video',
@@ -36,8 +36,6 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
                     data = me.getDataFromCache();
                 if (data) {
                     store.setData(data);
-                    //fire the refresh event so that views can get updated
-                    me.fireEvent('refresh', me, data);
                     return false; //prevent store calling load
                 }
                 return true;
@@ -52,6 +50,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
             }
         }
     },
+
     createMoviesCacheData: function (records) {
         //records element holds all the Movie model instances. However it has circular dependency properties.
         // converting the records to JSON fails due to circular references
@@ -84,7 +83,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         if (!me.isCacheDataStale()) {
             var cachedDataStr = cache.getItem(me.getCacheKeyForMoviesData());
             if (cachedDataStr) {
-                console.log("Got data from cache=|"+cachedDataStr+"|");
+                console.log("Got data from cache");
                 data = JSON.parse(cachedDataStr);
                 if ( !data || data.length == 0 ) {
                     data = null;
@@ -104,7 +103,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         if (cachedDateTime) {
             var currentTime = new Date().getTime(),
                 diffHours = (currentTime - cachedDateTime) / (3600000); // 1000*60*60
-            if (diffHours <= 2) {
+            if (diffHours <= 12) {
                 isStale = false;
             }
         }
@@ -115,9 +114,9 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         this.updateProxyUrl();
         this.callParent(arguments);
     },
+
     updateProxyUrl: function () {
         var me = this;
         me.getProxy().setExtraParam('channelId',me.getChannelId());
-//        me.updateProxy(me.getProxy(), null);
     }
 });

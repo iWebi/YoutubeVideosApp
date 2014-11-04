@@ -6,22 +6,25 @@ Ext.define('YoutubeVideosApp.view.VideosContainer', {
     xtype: 'videos',
     requires: ['YoutubeVideosApp.view.VideosList', 'YoutubeVideosApp.store.VideoStore'],
     config: {
-        layout: 'vbox',
-        items: [
-            { xtype: 'videoslist' }
-        ]
+        layout: 'vbox'
     },
-    addStore: function () {
+    initialize: function () {
         var me = this,
             store = Ext.create('YoutubeVideosApp.store.VideoStore', {
                 channelId: 'UC3djj8jS0370cu_ghKs_Ong'
             });
-        store.load();
-    },
-
-    initialize: function () {
-        var me = this;
-        me.addStore();
+        me.add(
+            {
+                xtype: 'videoslist',
+                store: store
+            },
+            {
+                xtype: 'button',
+                margin: 10,
+                text: 'Go for it',
+                ui: 'confirm'
+            }
+        );
         me.callParent(arguments);
     }
 });

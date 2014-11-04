@@ -9,19 +9,17 @@ Ext.define('YoutubeVideosApp.view.Main', {
     ],
     config: {
         tabBarPosition: 'bottom',
-
         items: [
             {
                 title: 'Welcome',
                 iconCls: 'home',
                 styleHtmlContent: true,
-                scrollable: true,
                 layout: 'fit',
                 items: [
                     {
                         docked: 'top',
                         xtype: 'titlebar',
-                        title: 'Welcome to Movies Finder'
+                        title: 'Welcome To Finder'
                     },
                     {
                         xtype: 'videos'

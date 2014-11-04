@@ -4,11 +4,13 @@
 Ext.define('YoutubeVideosApp.view.VideosList', {
     extend: 'Ext.List',
     xtype: 'videoslist',
-    requires: ['YoutubeVideosApp.store.StaticVideosStore'],
+    requires: ['YoutubeVideosApp.store.VideoStore', 'YoutubeVideosApp.view.VideoListItem'],
     config : {
         scrollable: true,
-        flex: 1,
-        itemTpl: '{videoUrl}-{imageUrl}',
-        store : 'videostore'
+        mode            : 'multi',
+        selectedCls     : '', //this is to prevent the parent component adding styling around the selected item
+        defaultType : 'videolistitem',
+        layout : 'fit',
+        flex: 1
     }
 });

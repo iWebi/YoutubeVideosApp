@@ -18,13 +18,13 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'VideosList', 'VideosContainer'
+        'Main', 'VideosList', 'VideosContainer', 'VideoListItem'
     ],
     stores : [
       'StaticVideosStore', 'VideoStore'
     ],
     models : [
-        'VideoModel'
+        'VideoModel', 'StaticVideoModel'
     ],
 
     icon: {
