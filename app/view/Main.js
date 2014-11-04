@@ -22,7 +22,14 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         title: 'Welcome To Finder'
                     },
                     {
-                        xtype: 'videos'
+                        xtype: 'channels'
+                    },
+                    {
+                        docked: 'bottom',
+                        xtype: 'button',
+                        margin: 10,
+                        text: 'Go for it',
+                        ui: 'confirm'
                     }
                 ]
             },
