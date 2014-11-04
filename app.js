@@ -21,7 +21,7 @@ Ext.application({
         'Main', 'VideosList', 'VideosContainer'
     ],
     stores : [
-      'StaticVideosStore'
+      'StaticVideosStore', 'VideoStore'
     ],
     models : [
         'VideoModel'

@@ -9,6 +9,6 @@ Ext.define('YoutubeVideosApp.view.VideosList', {
         scrollable: true,
         flex: 1,
         itemTpl: '{videoUrl}-{imageUrl}',
-        store : 'staticvideosstore'
+        store : 'videostore'
     }
 });
