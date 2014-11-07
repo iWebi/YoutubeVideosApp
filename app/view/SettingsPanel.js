@@ -4,7 +4,7 @@
 Ext.define('YoutubeVideosApp.view.SettingsPanel', {
     extend: 'Ext.form.Panel',
     xtype: 'youtube_settings',
-    requires: ['Ext.form.FieldSet', 'YoutubeVideosApp.view.ChannelsRemovePicker', 'YoutubeVideosApp.core.GlobalCache', 'YoutubeVideosApp.core.Util', 'YoutubeVideosApp.core.Session', 'YoutubeVideosApp.core.Constants'],
+    requires: ['Ext.form.FieldSet', 'YoutubeVideosApp.view.ChannelsRemoveSheet', 'YoutubeVideosApp.core.GlobalCache', 'YoutubeVideosApp.core.Util', 'YoutubeVideosApp.core.Session', 'YoutubeVideosApp.core.Constants'],
     config: {
         scrollable: true,
         items: [
@@ -17,13 +17,19 @@ Ext.define('YoutubeVideosApp.view.SettingsPanel', {
                 margin: 10,
                 ui: 'confirm',
                 handler : function() {
-                    this.parent.down('channels_remove_picker').show();
+                    //display channels picker
+                    this.parent.down('channels_remove_sheet').show();
                 }
             },
             {
-                xtype: 'channels_remove_picker',
-                itemId: 'channels_remove_picker',
-                hidden: true
+                xtype: 'channels_remove_sheet',
+                itemId: 'channels_remove_sheet',
+                hidden: true,
+                listeners : {
+                    change : function(me, value, eOpts) {
+                        console.log("change called");
+                    }
+                }
             }
         ]
     }

@@ -18,13 +18,16 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'VideosList', 'VideosContainer', 'VideoListItem', 'SettingsPanel', 'ChannelsRemovePicker'
+        'Main', 'VideosList', 'VideosContainer', 'VideoListItem', 'SettingsPanel', 'ChannelsRemoveSheet'
     ],
     stores: [
         'StaticVideosStore', 'VideoStore'
     ],
     models: [
         'VideoModel', 'StaticVideoModel'
+    ],
+    controllers : [
+        'SettingsController'
     ],
 
     icon: {

@@ -9,12 +9,17 @@ Ext.define('YoutubeVideosApp.core.Util', {
         constants: YoutubeVideosApp.core.Constants,
 
         getChannelsFromCache: function () {
-            var channelStr = this.globalCache.getItem("channels");
+            var channelStr = YoutubeVideosApp.core.GlobalCache.getItem("channels");
             if ( channelStr ) {
                 return JSON.parse(channelStr);
             } else {
                 return [];
             }
+        },
+
+        setChannelsToCacheAndSession : function(channels) {
+            YoutubeVideosApp.core.GlobalCache.setItem("channels", JSON.stringify(channels));
+            YoutubeVideosApp.core.Session.cacheIt("channels", channels);
         },
 
         getObjectValues: function (obj) {
