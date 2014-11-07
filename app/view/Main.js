@@ -5,7 +5,8 @@ Ext.define('YoutubeVideosApp.view.Main', {
         'Ext.TitleBar',
         'Ext.Video',
         'Ext.List',
-        'YoutubeVideosApp.view.VideosContainer'
+        'YoutubeVideosApp.view.VideosContainer',
+        'YoutubeVideosApp.view.SettingsPanel'
     ],
     config: {
         tabBarPosition: 'bottom',
@@ -36,12 +37,16 @@ Ext.define('YoutubeVideosApp.view.Main', {
             {
                 title: 'Settings',
                 iconCls: 'settings',
-
+                layout: 'fit',
+                styleHtmlContent: true,
                 items: [
                     {
                         docked: 'top',
                         xtype: 'titlebar',
                         title: 'Filter Options'
+                    },
+                    {
+                        xtype: 'youtube_settings'
                     }
                 ]
             }

@@ -17,7 +17,6 @@ Ext.define('YoutubeVideosApp.view.VideosList', {
         store: 'videostore',
         listeners : {
             initialize : function() {
-                console.log("initialize of list "+JSON.stringify(YoutubeVideosApp.core.Session.getFromCache("channelIdsJson")));
                 this.getStore().load();
             }
         }

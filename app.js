@@ -18,7 +18,7 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'VideosList', 'VideosContainer', 'VideoListItem'
+        'Main', 'VideosList', 'VideosContainer', 'VideoListItem', 'SettingsPanel', 'ChannelsRemovePicker'
     ],
     stores: [
         'StaticVideosStore', 'VideoStore'
@@ -60,16 +60,16 @@ Ext.application({
     ensureDefaultChannels: function () {
         // first time launch will not have any channels to search for
         // Use a set of default channels
-        var channels = YoutubeVideosApp.core.GlobalCache.getItem('channelIds');
-        if (channels == null) {
-            var defaultChannels = ['UC3djj8jS0370cu_ghKs_Ong'];
-            YoutubeVideosApp.core.GlobalCache.setItem('channelIds', JSON.stringify(defaultChannels));
+        var util = YoutubeVideosApp.core.Util,
+            channels = util.getChannelsFromCache();
+        if (channels.length == 0) {
+            var defaultChannels = { 'HooplaKidz': 'UC3djj8jS0370cu_ghKs_Ong'  };
+            YoutubeVideosApp.core.GlobalCache.setItem('channels', JSON.stringify(defaultChannels));
         }
     },
 
     setupSessionData: function () {
-        //TODO: Mock data for now
-        YoutubeVideosApp.core.Session.cacheIt("channelIds",  [ "UC3djj8jS0370cu_ghKs_Ong", "UC3djj8jS0370cu_ghKs_Ong" ] );
+        YoutubeVideosApp.core.Session.cacheIt("channelIds", YoutubeVideosApp.core.Util.getChannelIdsFromCache());
     },
 
     onUpdated: function () {

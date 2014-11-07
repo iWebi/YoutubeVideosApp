@@ -4,7 +4,8 @@
 Ext.define('YoutubeVideosApp.store.VideoStore', {
     extend: 'Ext.data.Store',
     alias: 'videostore',
-    requires: ['YoutubeVideosApp.model.VideoModel', 'YoutubeVideosApp.core.GlobalCache', 'YoutubeVideosApp.core.Session', 'YoutubeVideosApp.core.Constants'],
+    requires: ['YoutubeVideosApp.model.VideoModel', 'YoutubeVideosApp.core.GlobalCache',
+        'YoutubeVideosApp.core.Session', 'YoutubeVideosApp.core.Constants', 'YoutubeVideosApp.core.Util'],
     config: {
         storeId: 'videostore',
         model: 'YoutubeVideosApp.model.VideoModel',
