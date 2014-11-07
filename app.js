@@ -65,7 +65,7 @@ Ext.application({
         // Use a set of default channels
         var util = YoutubeVideosApp.core.Util,
             channels = util.getChannelsFromCache();
-        if (channels.length == 0) {
+        if (util.isEmpty(channels)) {
             var defaultChannels = { 'HooplaKidz': 'UC3djj8jS0370cu_ghKs_Ong'  };
             YoutubeVideosApp.core.GlobalCache.setItem('channels', JSON.stringify(defaultChannels));
         }

@@ -30,6 +30,8 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
                 //---------------------------------------------------------------------------------------------------------
                 var me = this,
                     data = me.getDataFromCache();
+                //if not channels to retrieve from, prevent load call
+//                if (data || YoutubeVideosApp.core.Util.getChannelIdsFromCache().length == 0) {
                 if (data) {
                     store.setData(data);
                     return false; //prevent store calling load
@@ -103,7 +105,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
     updateProxyUrl: function () {
         var me = this,
             proxy = me.getProxy(),
-            channelIds = YoutubeVideosApp.core.Session.getFromCache("channelIds");
+            channelIds = YoutubeVideosApp.core.Util.getChannelIdsFromCache();
         if ( channelIds ) {
             console.log("updating proxy url");
             proxy.setExtraParam("channelIds", JSON.stringify(channelIds));

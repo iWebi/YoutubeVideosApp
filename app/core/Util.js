@@ -6,17 +6,21 @@ Ext.define('YoutubeVideosApp.core.Util', {
     requires: ['Ext.device.Device'],
     statics: {
         getChannelsFromCache: function () {
-            var channelStr = YoutubeVideosApp.core.GlobalCache.getItem("channels");
-            if (channelStr) {
-                return JSON.parse(channelStr);
-            } else {
-                return [];
-            }
+            var channelStr = YoutubeVideosApp.core.GlobalCache.getItem("channels") || "{}";
+            return JSON.parse(channelStr);
         },
 
         setChannelsToCacheAndSession: function (channels) {
             YoutubeVideosApp.core.GlobalCache.setItem("channels", JSON.stringify(channels));
             YoutubeVideosApp.core.Session.cacheIt("channels", channels);
+        },
+
+        isEmpty: function (obj) {
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop))
+                    return false;
+            }
+            return true;
         },
 
         deleteCachedDataForChannelMovies: function () {
