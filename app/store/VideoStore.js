@@ -4,31 +4,26 @@
 Ext.define('YoutubeVideosApp.store.VideoStore', {
     extend: 'Ext.data.Store',
     alias: 'videostore',
-    requires: ['YoutubeVideosApp.model.VideoModel', 'YoutubeVideosApp.core.GlobalCache'],
+    requires: ['YoutubeVideosApp.model.VideoModel', 'YoutubeVideosApp.core.GlobalCache', 'YoutubeVideosApp.core.Session', 'YoutubeVideosApp.core.Constants'],
     config: {
         storeId: 'videostore',
         model: 'YoutubeVideosApp.model.VideoModel',
-        autoLoad : true,
-        channelId: null,
+        autoLoad: false, //we need to wait until we get channel information from Session
         proxy: {
-            type: 'ajax',
-            url: 'https://www.googleapis.com/youtube/v3/search',
-            useDefaultXhrHeader: false,
-            extraParams: {
-                part: 'snippet',
-                maxResults: 10,
-                key: 'AIzaSyByR-19brS7IWGmskOHhXiaCpSUxWfQOeU',
-                order:'date',
-                type:'video',
-                videoDuration:'long'
+            url : 'http://localhost:9090/youtube/channel_videos',
+            useDefaultXhrHeader : false,
+            defaultHeaders: {
+                'Content-Type': 'application/json; charset=utf-8'
             },
+            type: 'ajax',
             reader: {
-                type: 'json',
-                rootProperty: 'items'
+                type: 'json'
             }
         },
         listeners: {
             beforeload: function (store, operations, eOpts) {
+                console.log("call to before load");
+                this.updateProxyUrl();
                 //---------------------------------------------------------------------------------------------------------
                 // HACKY PROCEDURE TO PREVENT STORE FROM MAKING AJAX REQUEST IF LOCAL STORAGE HAS DATA CACHED
                 //---------------------------------------------------------------------------------------------------------
@@ -42,11 +37,13 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
             },
 
             load: function (store, records, successful, operation, eOpts) {
+                console.log("call to load made");
                 //Once the data is loaded, cache it
                 var me = this,
-                    cache = YoutubeVideosApp.core.GlobalCache;
-                cache.setItem(me.getCacheKeyForDateTime(), new Date().getTime());
-                cache.setItem(me.getCacheKeyForMoviesData(), me.createMoviesCacheData(records));
+                    cache = YoutubeVideosApp.core.GlobalCache,
+                    constants = YoutubeVideosApp.core.Constants;
+                cache.setItem(constants.DATE_CACHE_KEY_FOR_MOVIES, new Date().getTime());
+                cache.setItem(constants.CACHE_KEY_FOR_MOVIES, me.createMoviesCacheData(records));
             }
         }
     },
@@ -62,14 +59,6 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         return JSON.stringify(data);
     },
 
-    getCacheKeyForDateTime: function () {
-        return this.getChannelId() + "-DateTime";
-    },
-
-    getCacheKeyForMoviesData: function () {
-        return this.getChannelId();
-    },
-
     // For each test launched, entire data (i.e all questions) are retrieved and stored in local storage cache.
     // Initial launch of the application will load the "InitialLoad" data which includes overall application
     // information such as available tests, and their last updated timestamp.
@@ -81,11 +70,11 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
             cache = YoutubeVideosApp.core.GlobalCache,
             data = null;
         if (!me.isCacheDataStale()) {
-            var cachedDataStr = cache.getItem(me.getCacheKeyForMoviesData());
+            var cachedDataStr = cache.getItem(YoutubeVideosApp.core.Constants.CACHE_KEY_FOR_MOVIES);
             if (cachedDataStr) {
                 console.log("Got data from cache");
                 data = JSON.parse(cachedDataStr);
-                if ( !data || data.length == 0 ) {
+                if (!data || data.length == 0) {
                     data = null;
                 }
             }
@@ -98,7 +87,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         var me = this,
             cache = YoutubeVideosApp.core.GlobalCache,
         // date is cached separately so that we can parse this item independently to improve performance
-            cachedDateTime = cache.getItem(me.getCacheKeyForDateTime()),
+            cachedDateTime = cache.getItem(YoutubeVideosApp.core.Constants.DATE_CACHE_KEY_FOR_MOVIES),
             isStale = true;
         if (cachedDateTime) {
             var currentTime = new Date().getTime(),
@@ -110,13 +99,14 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         return isStale;
     },
 
-    initialize: function () {
-        this.updateProxyUrl();
-        this.callParent(arguments);
-    },
-
     updateProxyUrl: function () {
-        var me = this;
-        me.getProxy().setExtraParam('channelId',me.getChannelId());
+        var me = this,
+            proxy = me.getProxy(),
+            channelIds = YoutubeVideosApp.core.Session.getFromCache("channelIds");
+        if ( channelIds ) {
+            console.log("updating proxy url");
+            proxy.setExtraParam("channelIds", JSON.stringify(channelIds));
+            me.updateProxy(proxy, null);
+        }
     }
 });

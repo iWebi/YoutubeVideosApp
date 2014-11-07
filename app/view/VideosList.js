@@ -8,11 +8,18 @@ Ext.define('YoutubeVideosApp.view.VideosList', {
     config: {
         scrollable: true,
         striped: true,
-        height:'100%',
+        height: '100%',
         mode: 'multi',
         selectedCls: '', //this is to prevent the parent component adding styling around the selected item
         defaultType: 'videolistitem',
         layout: 'fit',
-        flex: 1
+        flex: 1,
+        store: 'videostore',
+        listeners : {
+            initialize : function() {
+                console.log("initialize of list "+JSON.stringify(YoutubeVideosApp.core.Session.getFromCache("channelIdsJson")));
+                this.getStore().load();
+            }
+        }
     }
 });

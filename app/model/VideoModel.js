@@ -4,23 +4,9 @@
 Ext.define('YoutubeVideosApp.model.VideoModel', {
     extend: 'Ext.data.Model',
     config: {
-        idProperty: 'videoId',// its better if this name is not same as any fields name
+        idProperty: 'id',// its better if this name is not same as any fields name
         fields: [
-            {
-                name: 'snippet'
-            },
-            {
-                name: 'thumbnail',
-                mapping: 'snippet.thumbnails.default.url'
-            },
-            {
-                name: 'title',
-                mapping: 'snippet.title'
-            },
-            {
-                name: 'user',
-                mapping: 'snippet.channelTitle'
-            }
+            'publishedAt', 'title', 'thumbnail'
         ]
     }
 });

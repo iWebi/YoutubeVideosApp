@@ -18,7 +18,7 @@ Ext.application({
     ],
 
     views: [
-        'Main', 'VideosList', 'VideosContainer', 'VideoListItem', 'ChannelContainer'
+        'Main', 'VideosList', 'VideosContainer', 'VideoListItem'
     ],
     stores: [
         'StaticVideosStore', 'VideoStore'
@@ -48,6 +48,7 @@ Ext.application({
     launch: function () {
 
         this.ensureDefaultChannels();
+        this.setupSessionData();
 
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
@@ -64,6 +65,11 @@ Ext.application({
             var defaultChannels = ['UC3djj8jS0370cu_ghKs_Ong'];
             YoutubeVideosApp.core.GlobalCache.setItem('channelIds', JSON.stringify(defaultChannels));
         }
+    },
+
+    setupSessionData: function () {
+        //TODO: Mock data for now
+        YoutubeVideosApp.core.Session.cacheIt("channelIds",  [ "UC3djj8jS0370cu_ghKs_Ong", "UC3djj8jS0370cu_ghKs_Ong" ] );
     },
 
     onUpdated: function () {

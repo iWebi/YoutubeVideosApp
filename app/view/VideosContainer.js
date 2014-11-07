@@ -4,32 +4,15 @@
 Ext.define('YoutubeVideosApp.view.VideosContainer', {
     extend: 'Ext.Container',
     xtype: 'videos',
-    requires: ['YoutubeVideosApp.view.VideosList', 'YoutubeVideosApp.store.VideoStore'],
+    requires: ['YoutubeVideosApp.view.VideosList'],
     config: {
         layout: 'vbox',
-        channelId: null,
-        flex : 1,
+        flex: 1,
         scrollable: true,
-        listeners: {
-            initialize: function () {
-                var me = this,
-                    store = Ext.create('YoutubeVideosApp.store.VideoStore', {
-                        channelId: me.getChannelId()
-                    });
-                me.add([
-//                        {
-//                            docked: 'top',
-//                            xtype: 'titlebar',
-//                            padding : 10,
-//                            title: me.getChannelId()
-//                        },
-                        {
-                            xtype: 'videoslist',
-                            store: store
-                        }
-                    ]
-                );
+        items: [
+            {
+                xtype: 'videoslist'
             }
-        }
+        ]
     }
 });

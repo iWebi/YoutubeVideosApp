@@ -22,7 +22,7 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         title: 'Welcome To Finder'
                     },
                     {
-                        xtype: 'channels'
+                        xtype: 'videos'
                     },
                     {
                         docked: 'bottom',
