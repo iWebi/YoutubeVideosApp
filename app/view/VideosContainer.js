@@ -14,5 +14,9 @@ Ext.define('YoutubeVideosApp.view.VideosContainer', {
                 xtype: 'videoslist'
             }
         ]
+    },
+    refreshVideos : function() {
+        console.log("refreshing videos");
+        this.down('videoslist').getStore().load();
     }
 });

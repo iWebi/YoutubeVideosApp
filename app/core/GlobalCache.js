@@ -7,7 +7,10 @@ Ext.define('YoutubeVideosApp.core.GlobalCache', {
             return localStorage.getItem(item);
         },
         setItem: function (item, value) {
-            localStorage.setItem(item, value)
+            localStorage.setItem(item, value);
+        },
+        removeItem: function (item, value) {
+            localStorage.removeItem(item);
         },
         addIfNotExists: function (item, value) {
             if (!this.getItem(item)) {

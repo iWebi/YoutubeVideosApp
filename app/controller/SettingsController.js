@@ -30,11 +30,16 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                         channelsObj = util.getChannelsFromCache();
                     for (var i = 0; i < channelItems.length; i++) {
                         delete channelsObj[channelItems[i]];
-
                         //update the cache and session data and trigger refresh of UI
                         util.setChannelsToCacheAndSession(channelsObj);
-                    }
 
+                        //delete cache of movies to reload
+                        util.deleteCachedDataForChannelMovies();
+
+                        //refresh the videos
+                        var videosContainer = Ext.ComponentQuery.query(".videos")[0];
+                        videosContainer.refreshVideos();
+                    }
                 }
                 sheet.hide();
             },
