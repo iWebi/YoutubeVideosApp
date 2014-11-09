@@ -9,7 +9,7 @@ Ext.define('YoutubeVideosApp.core.Constants', {
         CACHE_KEY_FOR_MOVIES : 'ChannelMovies',
         video_link_template: Ext.create('Ext.XTemplate', '<div class="video_item">' +
             '<div><a href="{thumbnail}">{title}</a></div>' +
-            '<div><p>Date : {publishedAt}</p></div>' +
+            '<div><p>Date : {publishedAt} by {channelTitle}</p></div>' +
             '</div>')
     }
 });

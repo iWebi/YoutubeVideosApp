@@ -29,7 +29,9 @@ Ext.define('YoutubeVideosApp.view.ChannelsRemoveSheet', {
                         }
                     );
                 }
-                me.add(channelCheckboxItems);
+                if (channelCheckboxItems.length > 0 ) {
+                    me.add(channelCheckboxItems);
+                }
             }
         }
     }

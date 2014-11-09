@@ -32,7 +32,7 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                         delete channelsObj[channelItems[i].getName()];
                     }
                     //update the cache and session data and trigger refresh of UI
-                    console.log("setting channelsObj after deleting channels="+JSON.stringify(channelsObj));
+                    console.log("setting channelsObj after deleting channels=" + JSON.stringify(channelsObj));
                     util.setChannelsToCacheAndSession(channelsObj);
 
                     //delete cache of movies to reload
@@ -45,6 +45,7 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                 sheet.hide();
             },
             channelNamesToRemove = [];
+
         console.log("channelItems.length=" + channelItems.length);
         for (var i = 0; i < channelItems.length; i++) {
             var channelItem = channelItems[i];

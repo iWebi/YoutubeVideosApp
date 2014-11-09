@@ -6,7 +6,7 @@ Ext.define('YoutubeVideosApp.model.VideoModel', {
     config: {
         idProperty: 'id',// its better if this name is not same as any fields name
         fields: [
-            'publishedAt', 'title', 'thumbnail'
+            'publishedAt', 'title', 'thumbnail', 'channelTitle'
         ]
     }
 });

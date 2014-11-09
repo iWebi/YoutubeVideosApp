@@ -16,17 +16,22 @@ Ext.define('YoutubeVideosApp.view.SettingsPanel', {
                 iconCls: 'action',
                 margin: 10,
                 ui: 'confirm',
-                handler : function() {
-                    //display channels picker
-                    this.parent.down('channels_remove_sheet').show();
+                handler: function () {
+                    //display channels picker if channels are available (i.e selected by user)
+                    var channelsObj = YoutubeVideosApp.core.Util.getChannelsFromCache();
+                    if (YoutubeVideosApp.core.Util.isEmpty(channelsObj)) {
+                        Ext.Msg.alert("Info", "There are not channels to list");
+                    } else {
+                        this.parent.down('channels_remove_sheet').show();
+                    }
                 }
             },
             {
                 xtype: 'channels_remove_sheet',
                 itemId: 'channels_remove_sheet',
                 hidden: true,
-                listeners : {
-                    change : function(me, value, eOpts) {
+                listeners: {
+                    change: function (me, value, eOpts) {
                         console.log("change called");
                     }
                 }

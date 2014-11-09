@@ -18,7 +18,7 @@ Ext.define('YoutubeVideosApp.view.VideoListItem', {
                                 xtype: 'image',
                                 height: 250,
                                 width: 250,
-                                src: 'https://github.com/images/modules/dashboard/bootcamp/octocat_fork.png?1a1dfcb9'
+                                src: newData['thumbnail']
                             },
                             {
                                 html: video_link_template.apply(newData)

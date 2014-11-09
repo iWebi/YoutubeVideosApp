@@ -26,7 +26,7 @@ Ext.application({
     models: [
         'VideoModel', 'StaticVideoModel'
     ],
-    controllers : [
+    controllers: [
         'SettingsController'
     ],
 
@@ -66,7 +66,7 @@ Ext.application({
         var util = YoutubeVideosApp.core.Util,
             channels = util.getChannelsFromCache();
         if (util.isEmpty(channels)) {
-            var defaultChannels = { 'HooplaKidz': 'UC3djj8jS0370cu_ghKs_Ong'  };
+            var defaultChannels = { 'Volga Video': 'UCIeNlITYK46VkR7yIuTL8GQ', 'MaaTV': 'UCJF4y2nyCCrDKTgA7dxz1Qw' };
             YoutubeVideosApp.core.GlobalCache.setItem('channels', JSON.stringify(defaultChannels));
         }
     },
