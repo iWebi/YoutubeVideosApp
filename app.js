@@ -53,11 +53,38 @@ Ext.application({
         this.ensureDefaultChannels();
         this.setupSessionData();
 
+        if ( window.location.hash ) {
+            this.onYoutubeAuthRedirect();
+        }
+
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
         Ext.Viewport.add(Ext.create('YoutubeVideosApp.view.Main'));
+    },
+
+    onYoutubeAuthRedirect: function () {
+        if (window.location.hash) {
+            var params = window.location.hash.substring(1).split('&');
+            if (params[0].split('=')[0] == 'access_token') {
+                YoutubeVideosApp.core.Session.cacheIt("LoggedInDate", new Date());
+                for (var i = 0; i < params.length; i++) {
+                    var paramParts = params[i].split('=');
+                    YoutubeVideosApp.core.Session.cacheIt(paramParts[0], paramParts[1]);
+                }
+                //Validate the returned token
+                Ext.Ajax.request({
+                    url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
+                    params: {
+                        access_token: YoutubeVideosApp.core.Session.getFromCache('access_token')
+                    },
+                    success: function(response){
+                        console.log("response="+JSON.stringify(response));
+                    }
+                });
+            }
+        }
     },
 
     ensureDefaultChannels: function () {

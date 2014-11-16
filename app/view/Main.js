@@ -23,16 +23,33 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         title: 'Welcome To Finder'
                     },
                     {
-                        xtype: 'videos'
-                    },
-                    {
                         docked: 'bottom',
                         xtype: 'button',
                         margin: 10,
                         text: 'Go for it',
                         ui: 'confirm'
                     }
-                ]
+                ],
+                listeners : {
+                    initialize : function() {
+                        if ( YoutubeVideosApp.core.Util.isUserLoggedIntoYoutube()) {
+                            this.add(
+                                {
+                                    xtype: 'videos'
+                                }
+                            );
+                        } else {
+                            this.add(
+                                {
+                                    html : '<a href="https://accounts.google.com/o/oauth2/auth?'+
+                                    'client_id=824411757781-kuksgb48r8qtdlrnecka855knjp68i6q.apps.googleusercontent.com&' +
+                                    'redirect_uri=http%3A%2F%2Flocalhost%3A1841&' +
+                                    'scope=https://www.googleapis.com/auth/youtube&response_type=token">Login To Youtube</a>'
+                                }
+                            );
+                        }
+                    }
+                }
             },
             {
                 title: 'Settings',

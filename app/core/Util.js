@@ -39,6 +39,18 @@ Ext.define('YoutubeVideosApp.core.Util', {
             return vals;
         },
 
+        isUserLoggedIntoYoutube: function () {
+            var loggedInDate = YoutubeVideosApp.core.Session.getFromCache("LoggedInDate"),
+                isLoggedIn = false;
+            if (loggedInDate) {
+                var expiryInSeconds = YoutubeVideosApp.core.Session.getFromCache("expires_in");
+                if ((new Date().getTime() - loggedInDate.getTime()) <= expiryInSeconds) {
+                    isLoggedIn = true;
+                }
+            }
+            return isLoggedIn;
+        },
+
         getChannelIdsFromCache: function () {
             return this.getObjectValues(this.getChannelsFromCache());
         }
