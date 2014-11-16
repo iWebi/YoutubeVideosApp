@@ -31,8 +31,11 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
                 var me = this,
                     data = me.getDataFromCache();
                 //if not channels to retrieve from, prevent load call
-//                if (data || YoutubeVideosApp.core.Util.getChannelIdsFromCache().length == 0) {
                 if (data) {
+                    //sort the data based on publishedAt values descending
+                    data.sort(function(a,b) {
+                       return new Date(b.publishedAt) - new Date(a.publishedAt);
+                    });
                     store.setData(data);
                     return false; //prevent store calling load
                 }
