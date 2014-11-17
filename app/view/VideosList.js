@@ -9,7 +9,7 @@ Ext.define('YoutubeVideosApp.view.VideosList', {
         scrollable: true,
         striped: true,
         height: '100%',
-        mode: 'multi',
+        //mode: 'multi',
         emptyText : 'There are no videos to list. Please add a list of channels to retrieve the videos',
         loadingText : 'retrieving videos...',
         selectedCls: '', //this is to prevent the parent component adding styling around the selected item

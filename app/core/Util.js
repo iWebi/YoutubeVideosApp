@@ -59,15 +59,11 @@ Ext.define('YoutubeVideosApp.core.Util', {
 
         // Call the Data API to retrieve the playlist ID that uniquely identifies the
         // list of videos uploaded to the currently authenticated user's channel.
-        getFavouritesPlayListId: function () {
+        cacheFavouritesPlayListId: function () {
             var cache = YoutubeVideosApp.core.GlobalCache,
                 constants = YoutubeVideosApp.core.Constants,
                 cached_entry = cache.getItem(constants.YOUTTUBE_FAVORITES_PLAY_LIST_ID_CACHE_KEY);
-
-            if ( cached_entry ) {
-                return cached_entry;
-            }
-            else {
+            if ( !cached_entry ) {
                 Ext.Ajax.request({
                     url: 'https://www.googleapis.com/youtube/v3/channels',
                     params: {
@@ -89,7 +85,7 @@ Ext.define('YoutubeVideosApp.core.Util', {
             }
         },
 
-        addVideosToFavorites : function() {
+        addVideoToFavorites : function(videoId) {
             var cache = YoutubeVideosApp.core.GlobalCache,
                 constants = YoutubeVideosApp.core.Constants,
                 access_token_value = cache.getItem(constants.YOUTTUBE_ACCESS_TOKEN_CACHE_KEY),
@@ -99,7 +95,7 @@ Ext.define('YoutubeVideosApp.core.Util', {
                     "playlistId" : favorites_playlist_id,
                     "resourceId" : {
                         "kind" : "youtube#video",
-                        "videoId": "1e--OaN27UU"
+                        "videoId": videoId
                     }
                 }
             };
@@ -110,8 +106,6 @@ Ext.define('YoutubeVideosApp.core.Util', {
                 params: {
                     access_token: access_token_value
                 },
-                //xhr2 : true,
-                //useDefaultXhrHeader : false,
                 success: function(response){
                     console.log("Success in adding video to playlist");
                 },

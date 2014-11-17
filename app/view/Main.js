@@ -21,26 +21,14 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         docked: 'top',
                         xtype: 'titlebar',
                         title: 'Welcome To Finder'
-                    },
-                    {
-                        docked: 'bottom',
-                        xtype: 'button',
-                        margin: 10,
-                        text: 'Go for it',
-                        ui: 'confirm'
                     }
                 ],
                 listeners : {
                     initialize : function() {
                         var util = YoutubeVideosApp.core.Util;
                         if ( util.isUserLoggedIntoYoutube()) {
-                            util.getFavouritesPlayListId();
-                            util.addVideosToFavorites();
-                            this.add(
-                                {
-                                    xtype: 'videos'
-                                }
-                            );
+                            util.cacheFavouritesPlayListId();
+                            this.add({xtype: 'videos'});
                         } else {
                             this.add(
                                 {
