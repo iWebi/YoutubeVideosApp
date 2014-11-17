@@ -32,7 +32,10 @@ Ext.define('YoutubeVideosApp.view.Main', {
                 ],
                 listeners : {
                     initialize : function() {
-                        if ( YoutubeVideosApp.core.Util.isUserLoggedIntoYoutube()) {
+                        var util = YoutubeVideosApp.core.Util;
+                        if ( util.isUserLoggedIntoYoutube()) {
+                            util.getFavouritesPlayListId();
+                            util.addVideosToFavorites();
                             this.add(
                                 {
                                     xtype: 'videos'
@@ -44,7 +47,7 @@ Ext.define('YoutubeVideosApp.view.Main', {
                                     html : '<a href="https://accounts.google.com/o/oauth2/auth?'+
                                     'client_id=824411757781-kuksgb48r8qtdlrnecka855knjp68i6q.apps.googleusercontent.com&' +
                                     'redirect_uri=http%3A%2F%2Flocalhost%3A1841&' +
-                                    'scope=https://www.googleapis.com/auth/youtube&response_type=token">Login To Youtube</a>'
+                                    'scope=https://www.googleapis.com/auth/youtube&approval_prompt=auto&response_type=token">Login To Youtube</a>'
                                 }
                             );
                         }

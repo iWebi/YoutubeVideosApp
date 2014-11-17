@@ -68,21 +68,14 @@ Ext.application({
         if (window.location.hash) {
             var params = window.location.hash.substring(1).split('&');
             if (params[0].split('=')[0] == 'access_token') {
-                YoutubeVideosApp.core.Session.cacheIt("LoggedInDate", new Date());
+                var access_token_value = params[0].split('=')[1],
+                    cache = YoutubeVideosApp.core.GlobalCache;
+                cache.setItem(YoutubeVideosApp.core.Constants.YOUTTUBE_LOGGED_IN_TIME_CACHE_KEY, new Date().getTime());
                 for (var i = 0; i < params.length; i++) {
                     var paramParts = params[i].split('=');
-                    YoutubeVideosApp.core.Session.cacheIt(paramParts[0], paramParts[1]);
+                    cache.setItem(paramParts[0], paramParts[1]);
                 }
-                //Validate the returned token
-                Ext.Ajax.request({
-                    url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
-                    params: {
-                        access_token: YoutubeVideosApp.core.Session.getFromCache('access_token')
-                    },
-                    success: function(response){
-                        console.log("response="+JSON.stringify(response));
-                    }
-                });
+                YoutubeVideosApp.core.Util.validate_access_token(access_token_value);
             }
         }
     },

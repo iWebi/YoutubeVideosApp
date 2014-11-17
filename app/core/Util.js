@@ -40,11 +40,13 @@ Ext.define('YoutubeVideosApp.core.Util', {
         },
 
         isUserLoggedIntoYoutube: function () {
-            var loggedInDate = YoutubeVideosApp.core.Session.getFromCache("LoggedInDate"),
+            var cache = YoutubeVideosApp.core.GlobalCache,
+                constants = YoutubeVideosApp.core.Constants,
+                loggedInDate = cache.getIntItem(constants.YOUTTUBE_LOGGED_IN_TIME_CACHE_KEY),
                 isLoggedIn = false;
             if (loggedInDate) {
-                var expiryInSeconds = YoutubeVideosApp.core.Session.getFromCache("expires_in");
-                if ((new Date().getTime() - loggedInDate.getTime()) <= expiryInSeconds) {
+                var expiryInMillis = cache.getIntItem(constants.YOUTTUBE_TOKEN_EXPIRY_CACHE_KEY) * 1000;
+                if ((new Date().getTime() - loggedInDate) <= expiryInMillis) {
                     isLoggedIn = true;
                 }
             }
@@ -53,6 +55,88 @@ Ext.define('YoutubeVideosApp.core.Util', {
 
         getChannelIdsFromCache: function () {
             return this.getObjectValues(this.getChannelsFromCache());
+        },
+
+        // Call the Data API to retrieve the playlist ID that uniquely identifies the
+        // list of videos uploaded to the currently authenticated user's channel.
+        getFavouritesPlayListId: function () {
+            var cache = YoutubeVideosApp.core.GlobalCache,
+                constants = YoutubeVideosApp.core.Constants,
+                cached_entry = cache.getItem(constants.YOUTTUBE_FAVORITES_PLAY_LIST_ID_CACHE_KEY);
+
+            if ( cached_entry ) {
+                return cached_entry;
+            }
+            else {
+                Ext.Ajax.request({
+                    url: 'https://www.googleapis.com/youtube/v3/channels',
+                    params: {
+                        part: 'contentDetails',
+                        mine: true,
+                        access_token: cache.getItem(constants.YOUTTUBE_ACCESS_TOKEN_CACHE_KEY)
+                    },
+                    method: 'GET',
+                    success: function (response) {
+                        var jsonResponse = JSON.parse(response.responseText),
+                            favoritesId = jsonResponse.items[0].contentDetails.relatedPlaylists.favorites;
+                        cache.setItem(constants.YOUTTUBE_FAVORITES_PLAY_LIST_ID_CACHE_KEY, favoritesId);
+                    },
+                    failure: function (response, opts) {
+                        console.log('Favorites ID retrieval failure with status code ' + response.status);
+                        //TODO: How to handle this scenario
+                    }
+                });
+            }
+        },
+
+        addVideosToFavorites : function() {
+            var cache = YoutubeVideosApp.core.GlobalCache,
+                constants = YoutubeVideosApp.core.Constants,
+                access_token_value = cache.getItem(constants.YOUTTUBE_ACCESS_TOKEN_CACHE_KEY),
+                favorites_playlist_id = cache.getItem(constants.YOUTTUBE_FAVORITES_PLAY_LIST_ID_CACHE_KEY),
+                jsonData = {
+                "snippet" : {
+                    "playlistId" : favorites_playlist_id,
+                    "resourceId" : {
+                        "kind" : "youtube#video",
+                        "videoId": "1e--OaN27UU"
+                    }
+                }
+            };
+            Ext.Ajax.request({
+                url: 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet',
+                jsonData: jsonData,
+                method : 'POST',
+                params: {
+                    access_token: access_token_value
+                },
+                //xhr2 : true,
+                //useDefaultXhrHeader : false,
+                success: function(response){
+                    console.log("Success in adding video to playlist");
+                },
+                failure: function (response, opts) {
+                    console.log('Adding videos to favorites failure with status code ' + response.status);
+                    //TODO: How to handle this scenario
+                }
+            });
+        },
+
+        validate_access_token : function (access_token_value) {
+            //Validate the returned token
+            Ext.Ajax.request({
+                url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
+                params: {
+                    access_token: access_token_value
+                },
+                success: function(response){
+                    console.log("response="+JSON.stringify(response));
+                }
+            });
+        },
+        refresh_access_token : function() {
+            //there is no direct way to get a refresh token from google auth server usingJavascript based client. See below
+            //http://stackoverflow.com/questions/15399883/youtube-api-is-there-a-way-to-refresh-an-access-token-in-the-client-side-v3-api
         }
     }
 });
