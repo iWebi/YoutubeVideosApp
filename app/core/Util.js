@@ -38,6 +38,15 @@ Ext.define('YoutubeVideosApp.core.Util', {
             }
             return vals;
         },
+        getObjectKeys: function (obj) {
+            var keys = [];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    keys.push(key);
+                }
+            }
+            return keys;
+        },
 
         isUserLoggedIntoYoutube: function () {
             var cache = YoutubeVideosApp.core.GlobalCache,
@@ -114,6 +123,14 @@ Ext.define('YoutubeVideosApp.core.Util', {
                     //TODO: How to handle this scenario
                 }
             });
+        },
+
+        getChannelNamesFromCache : function() {
+            return this.getObjectKeys(this.getChannelsFromCache());
+        },
+
+        addChannelNameIfValidAndGetVideos : function (channelName) {
+
         },
 
         validate_access_token : function (access_token_value) {

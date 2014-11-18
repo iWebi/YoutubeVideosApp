@@ -6,17 +6,39 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
     config: {
         refs: {
             settingView: 'youtube_settings',
-            removeChannels: 'button[text=Done]'
+            removeChannels: 'button[text=Done]',
+            addChannelById: 'button[text=Add By Id]',
+            addChannelByName: 'button[text=Add By Name]'
         },
 
-        routes: {
-
-        },
+        routes: {},
 
         control: {
-            removeChannels: { tap: 'onRemoveChannels' },
-            save: { tap: 'onTestSave' },
-            questionChoice: { check: 'onQuestionAnswered' }
+            removeChannels: {tap: 'onRemoveChannels'},
+            addChannelById: {tap: 'onChannelAddById'},
+            addChannelByName: {tap: 'onChannelAddByName'}
+        }
+    },
+
+    onChannelAddById: function (button, e, eOpts) {
+        var util = YoutubeVideosApp.core.Util,
+            channelId = button.up('.fieldset').down('#channelId').getValue(),
+            existingChannelIds = util.getChannelIdsFromCache();
+        if (existingChannelIds.indexOf(channelId) != -1) {
+            Ext.Msg.alert("DUPLICATE", "channel id " + channelId + " is already added");
+        } else {
+            console.log("channelId to be added is  " + channelId);
+        }
+    },
+
+    onChannelAddByName: function (button, e, eOpts) {
+        var util = YoutubeVideosApp.core.Util,
+            existingChannels = util.getChannelsFromCache(),
+            channelName = button.up('.fieldset').down('#channelName').getValue();
+        if (existingChannels[channelName]) {
+            Ext.Msg.alert("DUPLICATE", "channel name " + channelName + " is already added");
+        } else {
+            console.log("channelName to be added is  " + channelName);
         }
     },
 

@@ -46,13 +46,26 @@ Ext.define('YoutubeVideosApp.view.SettingsPanel', {
                             },
                             {
                                 xtype: 'button',
-                                text : 'Add',
-                                ui: 'confirm',
-                                handler : function () {
-                                    var me = this,
-                                        channelId = me.up('.fieldset').down('#channelId');
-                                    console.log("channelId to be added is  "+channelId.getValue());
-                                }
+                                text : 'Add By Id',
+                                ui: 'confirm'
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: 'Add A Channel By Name',
+                        instructions: 'copy the channel name from youtube website',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                name : 'channelName',
+                                itemId : 'channelName',
+                                label: 'Channel Name'
+                            },
+                            {
+                                xtype: 'button',
+                                text : 'Add By Name',
+                                ui: 'confirm'
                             }
                         ]
                     }
