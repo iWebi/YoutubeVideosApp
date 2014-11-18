@@ -12,7 +12,23 @@ Ext.define('YoutubeVideosApp.view.Main', {
         tabBarPosition: 'bottom',
         items: [
             {
-                title: 'Welcome',
+                title: 'Settings',
+                iconCls: 'settings',
+                layout: 'fit',
+                styleHtmlContent: true,
+                items: [
+                    {
+                        docked: 'top',
+                        xtype: 'titlebar',
+                        title: 'Filter Options'
+                    },
+                    {
+                        xtype: 'youtube_settings'
+                    }
+                ]
+            },
+            {
+                title: 'Videos',
                 iconCls: 'home',
                 styleHtmlContent: true,
                 layout: 'fit',
@@ -20,7 +36,7 @@ Ext.define('YoutubeVideosApp.view.Main', {
                     {
                         docked: 'top',
                         xtype: 'titlebar',
-                        title: 'Welcome To Finder'
+                        title: 'Add To Favorites'
                     }
                 ],
                 listeners : {
@@ -41,22 +57,6 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         }
                     }
                 }
-            },
-            {
-                title: 'Settings',
-                iconCls: 'settings',
-                layout: 'fit',
-                styleHtmlContent: true,
-                items: [
-                    {
-                        docked: 'top',
-                        xtype: 'titlebar',
-                        title: 'Filter Options'
-                    },
-                    {
-                        xtype: 'youtube_settings'
-                    }
-                ]
             }
         ]
     }

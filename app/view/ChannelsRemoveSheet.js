@@ -8,9 +8,14 @@ Ext.define('YoutubeVideosApp.view.ChannelsRemoveSheet', {
     config: {
         items: [
             {
+                docked: 'top',
+                xtype: 'toolbar',
+                title: 'Remove selected channels'
+            },
+            {
                 docked: 'bottom',
                 xtype: 'button',
-                text: 'Remove Selected Channels'
+                text: 'Done'
             }
         ],
         listeners: {

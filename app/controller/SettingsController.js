@@ -6,7 +6,7 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
     config: {
         refs: {
             settingView: 'youtube_settings',
-            removeChannels: 'button[text=Remove Selected Channels]'
+            removeChannels: 'button[text=Done]'
         },
 
         routes: {

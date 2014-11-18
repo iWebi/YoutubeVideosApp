@@ -124,7 +124,7 @@ Ext.define('YoutubeVideosApp.core.Util', {
                     access_token: access_token_value
                 },
                 success: function(response){
-                    console.log("response="+JSON.stringify(response));
+                    console.log("access_token validated successfully");
                 }
             });
         },
