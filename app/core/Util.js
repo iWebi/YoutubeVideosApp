@@ -129,9 +129,6 @@ Ext.define('YoutubeVideosApp.core.Util', {
             return this.getObjectKeys(this.getChannelsFromCache());
         },
 
-        addChannelNameIfValidAndGetVideos : function (channelName) {
-
-        },
 
         validate_access_token : function (access_token_value) {
             //Validate the returned token
