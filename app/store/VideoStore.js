@@ -11,7 +11,7 @@ Ext.define('YoutubeVideosApp.store.VideoStore', {
         model: 'YoutubeVideosApp.model.VideoModel',
         autoLoad: false, //we need to wait until we get channel information from Session
         proxy: {
-            url : 'http://localhost:9090/youtube/channel_videos',
+            url : 'http://youtube-movies-finder.appspot.com/api/youtube/channel_videos',
             useDefaultXhrHeader : false,
             defaultHeaders: {
                 'Content-Type': 'application/json; charset=utf-8'
