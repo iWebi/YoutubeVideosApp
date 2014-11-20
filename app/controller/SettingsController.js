@@ -74,6 +74,7 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                     //trigger videos refresh
                     var videosView = Ext.ComponentQuery.query('.videos')[0];
                     videosView.refreshVideos();
+                    Ext.Msg.alert("New Channel", "Channel added and videos refreshed");
                 }
             },
             failure: function(response){
