@@ -35,10 +35,11 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
 
     validateChannelInfoAndGetVideos : function (channelId, channelName) {
         var cache = YoutubeVideosApp.core.GlobalCache,
+            util = YoutubeVideosApp.core.Util,
             constants = YoutubeVideosApp.core.Constants,
             access_token_value = cache.getItem(constants.YOUTTUBE_ACCESS_TOKEN_CACHE_KEY),
             params = {
-                part: 'id',
+                part: 'snippet',
                 access_token: access_token_value
             };
         if ( channelId ) {
@@ -59,6 +60,20 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                     var msg = "Invalid channel: ";
                     msg += channelId != null ? channelId : channelName ;
                     Ext.Msg.alert("INVALID", msg);
+                } else {
+                    //valid channel info. Add the channel id and name to cache and refresh the videos
+                    var existingChannels = util.getChannelsFromCache(),
+                        newChannelId = jsonResponse.items[0].id,
+                        newChannelName = jsonResponse.items[0].snippet.title;
+                    existingChannels[newChannelName] = newChannelId;
+                    util.setChannelsToCacheAndSession(existingChannels);
+
+                    //remove videos cache
+                    util.deleteCachedDataForChannelMovies();
+
+                    //trigger videos refresh
+                    var videosView = Ext.ComponentQuery.query('.videos')[0];
+                    videosView.refreshVideos();
                 }
             },
             failure: function(response){
