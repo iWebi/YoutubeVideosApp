@@ -10,24 +10,8 @@ Ext.define('YoutubeVideosApp.view.Main', {
     ],
     config: {
         tabBarPosition: 'bottom',
-        activeItem : 1,
+        //activeItem : 1,
         items: [
-            {
-                title: 'Settings',
-                iconCls: 'settings',
-                layout: 'fit',
-                styleHtmlContent: true,
-                items: [
-                    {
-                        docked: 'top',
-                        xtype: 'titlebar',
-                        title: 'Filter Options'
-                    },
-                    {
-                        xtype: 'youtube_settings'
-                    }
-                ]
-            },
             {
                 title: 'Videos',
                 iconCls: 'home',
@@ -60,6 +44,22 @@ Ext.define('YoutubeVideosApp.view.Main', {
                         }
                     }
                 }
+            },
+            {
+                title: 'Settings',
+                iconCls: 'settings',
+                layout: 'fit',
+                styleHtmlContent: true,
+                items: [
+                    {
+                        docked: 'top',
+                        xtype: 'titlebar',
+                        title: 'Filter Options'
+                    },
+                    {
+                        xtype: 'youtube_settings'
+                    }
+                ]
             }
         ]
     }

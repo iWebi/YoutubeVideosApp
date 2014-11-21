@@ -19,25 +19,38 @@ Ext.define('YoutubeVideosApp.view.ChannelsRemoveSheet', {
             }
         ],
         listeners: {
+            channelsUpdated : function() {
+                console.log("On channels updated");
+                //clear existing channel checkboxes and add new
+                var checkboxComponent = null;
+                while ((checkboxComponent = this.down('.checkboxfield')) != null) {
+                    this.remove(checkboxComponent, true);
+                }
+                this.addCheckboxComponentsForChannels();
+            },
+
             initialize: function () {
-                var me = this,
-                    channelsObj = YoutubeVideosApp.core.Util.getChannelsFromCache(),
-                    channelCheckboxItems = [];
-                for (var key in channelsObj) {
-                    channelCheckboxItems.push(
-                        {
-                            xtype: 'checkboxfield',
-                            name: key,
-                            labelWidth: '80%',
-                            label: key,
-                            value: channelsObj[key]
-                        }
-                    );
-                }
-                if (channelCheckboxItems.length > 0 ) {
-                    me.add(channelCheckboxItems);
-                }
+                this.addCheckboxComponentsForChannels();
             }
+        }
+    },
+    addCheckboxComponentsForChannels : function () {
+        var me = this,
+            channelsObj = YoutubeVideosApp.core.Util.getChannelsFromCache(),
+            channelCheckboxItems = [];
+        for (var key in channelsObj) {
+            channelCheckboxItems.push(
+                {
+                    xtype: 'checkboxfield',
+                    name: key,
+                    labelWidth: '80%',
+                    label: key,
+                    value: channelsObj[key]
+                }
+            );
+        }
+        if (channelCheckboxItems.length > 0 ) {
+            me.add(channelCheckboxItems);
         }
     }
 });

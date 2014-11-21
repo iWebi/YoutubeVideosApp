@@ -42,6 +42,10 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                 part: 'snippet',
                 access_token: access_token_value
             };
+        if ( !util.isUserLoggedIntoYoutube()) {
+            Ext.Msg.alert("Login", "Login to youtube before adding a channel");
+            return;
+        }
         if ( channelId ) {
             params['id'] = channelId;
         } else {
@@ -71,10 +75,13 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                     //remove videos cache
                     util.deleteCachedDataForChannelMovies();
 
-                    //trigger videos refresh
-                    var videosView = Ext.ComponentQuery.query('.videos')[0];
-                    videosView.refreshVideos();
-                    Ext.Msg.alert("New Channel", "Channel added and videos refreshed");
+                    var alertCallback = function() {
+                        //trigger videos refresh
+                        var videosView = Ext.ComponentQuery.query('.videos')[0];
+                        videosView.refreshVideos();
+                    };
+
+                    Ext.Msg.alert("New Channel", "Channel added and videos refreshed.", alertCallback);
                 }
             },
             failure: function(response){
@@ -99,13 +106,16 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
     onRemoveChannels: function (button, e, eOpts) {
         var sheet = button.up('sheet'),
             channelItems = sheet.query('checkboxfield'),
+            channelNamesToRemove = [],
             confirmResponse = function (buttonID) {
                 if (buttonID != "no") {
                     console.log("channels will be removed=" + JSON.stringify(channelNamesToRemove));
                     var util = YoutubeVideosApp.core.Util,
                         channelsObj = util.getChannelsFromCache();
-                    for (var i = 0; i < channelItems.length; i++) {
-                        delete channelsObj[channelItems[i].getName()];
+                    console.log("channels object before delete = "+JSON.stringify(channelsObj));
+                    for (var i = 0; i < channelNamesToRemove.length; i++) {
+                        console.log("deleting channel name = "+channelNamesToRemove[i]);
+                        delete channelsObj[channelNamesToRemove[i]];
                     }
                     //update the cache and session data and trigger refresh of UI
                     console.log("setting channelsObj after deleting channels=" + JSON.stringify(channelsObj));
@@ -115,12 +125,16 @@ Ext.define('YoutubeVideosApp.controller.SettingsController', {
                     util.deleteCachedDataForChannelMovies();
 
                     //refresh the videos
-                    var videosContainer = Ext.ComponentQuery.query(".videos")[0];
-                    videosContainer.refreshVideos();
+                    if ( util.isUserLoggedIntoYoutube()) {
+                        var videosContainer = Ext.ComponentQuery.query(".videos")[0];
+                        videosContainer.refreshVideos();
+                    }
+
+                    //refresh the sheet
+                    sheet.fireEvent("channelsUpdated");
                 }
                 sheet.hide();
-            },
-            channelNamesToRemove = [];
+            };
 
         console.log("channelItems.length=" + channelItems.length);
         for (var i = 0; i < channelItems.length; i++) {
